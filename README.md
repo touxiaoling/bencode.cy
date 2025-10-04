@@ -1,4 +1,6 @@
 # Bencode.cy
+[![PyPI License](https://img.shields.io/pypi/l/bencode.cy.svg)](https://pypi.org/project/bencode.cy/)
+[![PyPI Version](https://img.shields.io/pypi/v/bencode.cy.svg)](https://pypi.org/project/bencode.cy/)
 
 A fast bencode implementation based on Cython, supporting Python 3.9+. 
 
@@ -10,8 +12,6 @@ Based on my tests, it is currently among the faster bencode libraries available.
 
 It is written using Cython's pure Python syntax, so it can run directly without Cython compilation. Of course, performance is significantly better after compilation. 
 
-
-[![PyPI License](https://img.shields.io/pypi/l/bencode.cy.svg)](https://pypi.org/project/bencode.cy/)
 
 
 ## Installation
