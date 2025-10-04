@@ -103,3 +103,15 @@ def test_better_bdecode_benchmark(benchmark, tor):
 
     e2 = bdecode(tor)
     benchmark(bencode, e2)
+
+def test_bcoding_benchmark(benchmark, tor):
+    from bcoding import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_bending_benchmark(benchmark, tor):
+    from bcoding import bdecode, bencode
+
+    benchmark(bdecode, tor)

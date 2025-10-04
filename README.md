@@ -4,9 +4,9 @@
 
 A fast bencode implementation based on Cython, supporting Python 3.9+. 
 
-The bencode functions are 15% to 145% faster than other compiled libraries, and the decode methods are 40% to 136% faster than other compiled libraries. 
+The bencode functions are 15% to 230% faster than other compiled libraries, and the decode methods are 40% to 320% faster than other compiled libraries. 
 
-On average, they outperform pure Python versions by 150%.
+On average, they outperform pure Python versions by 250%.
 
 Based on my tests, it is currently among the faster bencode libraries available. 
 

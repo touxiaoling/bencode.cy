@@ -3,10 +3,20 @@ revision = 3
 requires-python = ">=3.9"
 
 [[package]]
+name = "bcoding"
+version = "1.5"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/83/39/e52b111e1e4c978c3083bb1d9c943da50e2f29409667aad0cb9c1ee7ea54/bcoding-1.5.tar.gz", hash = "sha256:4bb8a10b51a36f0840ea341ae0958c3e1a83ec4c4cb2b059e896b56ffe84e270", size = 2917, upload-time = "2013-12-02T16:30:40.592Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/9d/2f/6ee83fc7ec45bff8b1cf54f45acb61b00dd6ffacd68639e35fc247ae9f21/bcoding-1.5-py2.py3-none-any.whl", hash = "sha256:b3545ec526b1cf036a689dfb7cc1d2926f99145017a39b6a2905ff52dc0ec10b", size = 4355, upload-time = "2013-12-02T17:41:21.058Z" },
+]
+
+[[package]]
 name = "bencode-cy"
 version = "1.0.2"
 source = { editable = "." }
 dependencies = [
+    { name = "bcoding" },
     { name = "bencodepy" },
     { name = "better-bencode" },
 ]
@@ -23,6 +33,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "bcoding", specifier = ">=1.5" },
     { name = "bencodepy", specifier = ">=0.9.5" },
     { name = "better-bencode", specifier = ">=0.2.1" },
 ]

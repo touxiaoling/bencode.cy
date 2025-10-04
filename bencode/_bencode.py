@@ -129,22 +129,22 @@ def bdecode(encoded: bytes):
     while pos < bytes_len:
         char_byte = encoded[pos]
 
-        if char_byte == 105:  # i Integer
-            number, pos = _parse_forward(101, encoded, pos + 1)  # e
-            stack.append(number)
-
-        elif 47 < char_byte < 58:  # 0-9 bytes
+        if 47 < char_byte < 58:  # 0-9 bytes
             # 0:48 1:49 2:50 3:51 4:52 5:53 6:54 7:55 8:56 9:57 ::58
             str_len, pos = _parse_forward(58, encoded, pos)  #:
             stack.append(encoded[pos : pos + str_len])
             pos += str_len
 
-        elif char_byte == 108:  # l List
-            stack.append(list)
-            pos += 1
+        elif char_byte == 105:  # i Integer
+            number, pos = _parse_forward(101, encoded, pos + 1)  # e
+            stack.append(number)
 
         elif char_byte == 100:  # d Dictionary
             stack.append(dict)
+            pos += 1
+
+        elif char_byte == 108:  # l List
+            stack.append(list)
             pos += 1
 
         elif char_byte == 101:  # End of a dictionary | list
