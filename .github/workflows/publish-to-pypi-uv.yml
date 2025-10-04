@@ -27,5 +27,11 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: "Build wheels"
         run: uv build
+      - name: Repair wheels with auditwheel
+        run: |
+          for wheel in dist/*.whl; do
+            uvx auditwheel repair "$wheel" --plat manylinux_2_34_x86_64 -w dist/
+          done
+          rm -f dist/*linux_x86_64.whl
       - name: Publish to PyPi
         run: uv publish
