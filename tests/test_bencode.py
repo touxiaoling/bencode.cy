@@ -36,6 +36,19 @@ def test_bencode_benchmark(benchmark, tor):
     benchmark(bencode, e2)
 
 
+def test_bdecode_py_benchmark(benchmark, tor):
+    from bencode._bencode import bdecode
+
+    benchmark(bdecode, tor)
+
+
+def test_bencode_py_benchmark(benchmark, tor):
+    from bencode._bencode import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
 @pytest.mark.skipif(sys.version_info >= (3, 12), reason="anything")
 def test_bdecoder_pyx_benchmark(benchmark, tor):
     from bencoder import bdecode, bencode
@@ -44,8 +57,21 @@ def test_bdecoder_pyx_benchmark(benchmark, tor):
 
 
 @pytest.mark.skipif(sys.version_info >= (3, 12), reason="anything")
-def test_bencode_pyx_benchmark(benchmark, tor):
+def test_bencoder_pyx_benchmark(benchmark, tor):
     from bencoder import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_fastbencode_rust_benchmark(benchmark, tor):
+    from fastbencode import bdecode, bencode
+
+    benchmark(bdecode, tor)
+
+
+def test_fastdecode_rust_benchmark(benchmark, tor):
+    from fastbencode import bdecode, bencode
 
     e2 = bdecode(tor)
     benchmark(bencode, e2)

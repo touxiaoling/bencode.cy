@@ -21,7 +21,7 @@ else:
 
 ext_modules = [
     Extension(
-        name="bencode._bencode",  # 生成的模块名
+        name="bencode._bencodec",  # 生成的模块名
         sources=["bencode/_bencode.py"],  # 你的Cython源码文件
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,

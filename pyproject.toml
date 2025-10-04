@@ -30,6 +30,7 @@ dev = [
     "pytest-benchmark>=5.1.0",
     "bencoder-pyx>=3.0.1;python_version <= '3.11'",
     "cython>=3.1.4",
+    "fastbencode>=0.3.6",
 ]
 
 [tool.ruff]
