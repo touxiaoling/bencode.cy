@@ -17,7 +17,7 @@ wheels = [
 
 [[package]]
 name = "bencode-cy"
-version = "2025.10.5"
+version = "1.1.0"
 source = { editable = "." }
 
 [package.dev-dependencies]
