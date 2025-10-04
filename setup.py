@@ -12,7 +12,7 @@ if platform.system() == "Windows":  # Windows（MSVC）
 else:
     extra_compile_args = [
         "-O3",  # 激进优化
-#        "-march=native",  # 针对本地CPU优化
+        #        "-march=native",  # 针对本地CPU优化
         "-ffast-math",  # 快速数学运算
         "-funroll-loops",  # 循环展开
     ]
@@ -32,5 +32,5 @@ setup(
     name="bencode.cy",
     packages=["bencode"],
     # ext_modules =cythonize("bencode.py")
-    ext_modules=cythonize(ext_modules, annotate=True,language_level="3"),  # annotate生成优化分析报告
+    ext_modules=cythonize(ext_modules, annotate=True, language_level="3"),  # annotate生成优化分析报告
 )
