@@ -6,6 +6,10 @@ requires-python = ">=3.9"
 name = "bencode-cy"
 version = "1.0.2"
 source = { editable = "." }
+dependencies = [
+    { name = "bencodepy" },
+    { name = "better-bencode" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -18,6 +22,10 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [
+    { name = "bencodepy", specifier = ">=0.9.5" },
+    { name = "better-bencode", specifier = ">=0.2.1" },
+]
 
 [package.metadata.requires-dev]
 dev = [
@@ -28,6 +36,12 @@ dev = [
     { name = "pytest-benchmark", specifier = ">=5.1.0" },
     { name = "setuptools", specifier = ">=80.9.0" },
 ]
+
+[[package]]
+name = "bencodepy"
+version = "0.9.5"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/d8/72/e2ee9f8a93c92af1ba2d7ef903fd653ef397564ef7715c6ab3eb462f6e29/bencodepy-0.9.5.zip", hash = "sha256:af472134d73ea58edab3c2cb2f2cf61eb9d783908284c3d2d5b1cfd38df864b8", size = 3598, upload-time = "2015-10-16T21:30:09.066Z" }
 
 [[package]]
 name = "bencoder-pyx"
@@ -86,6 +100,12 @@ wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/34/75/8045ad1663aa004f391949f034e8d2657c2c94fd0e7b95661b343e55ad01/bencoder.pyx-3.0.1-pp39-pypy39_pp73-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:91a13e7828aab11dac83f5023e6bc391e0295cb805e65719a7d58934deaeecb9", size = 45385, upload-time = "2022-12-12T06:29:18.254Z" },
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/7c/9b/d3e89c2b39c98eeffaf46e49b8d4f86d0901795e351d9c4ad89445c2eb51/bencoder.pyx-3.0.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:5663bd65bc5430536efb36070f9c620dac102ead57652724b6b79971cd56a60f", size = 32813, upload-time = "2022-12-12T06:29:20.036Z" },
 ]
+
+[[package]]
+name = "better-bencode"
+version = "0.2.1"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/0e/c2/a9060ea075dadc97d3933286166c821dfc60b8c5f7f28120e958cb484200/better-bencode-0.2.1.tar.gz", hash = "sha256:3a83ad0fc6b1b0c3db7819fc885f4f6561349cfc4221707871fc74bb9d6946d0", size = 6551, upload-time = "2016-05-12T20:23:26.239Z" }
 
 [[package]]
 name = "colorama"

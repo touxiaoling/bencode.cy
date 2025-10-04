@@ -70,8 +70,36 @@ def test_fastbencode_rust_benchmark(benchmark, tor):
     benchmark(bdecode, tor)
 
 
-def test_fastdecode_rust_benchmark(benchmark, tor):
+def test_fastbdecode_rust_benchmark(benchmark, tor):
     from fastbencode import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_bencodepy_benchmark(benchmark, tor):
+    from bencodepy import decode as bdecode
+
+    benchmark(bdecode, tor)
+
+
+def test_bdecodepy_benchmark(benchmark, tor):
+    from bencodepy import decode as bdecode
+    from bencodepy import encode as bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_better_bencode_benchmark(benchmark, tor):
+    from better_bencode import loads as bdecode
+
+    benchmark(bdecode, tor)
+
+
+def test_better_bdecode_benchmark(benchmark, tor):
+    from better_bencode import loads as bdecode
+    from better_bencode import dumps as bencode
 
     e2 = bdecode(tor)
     benchmark(bencode, e2)
