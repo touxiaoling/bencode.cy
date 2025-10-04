@@ -14,7 +14,7 @@ pip install bencode.cy
 ## Usage Examples
 
 ```python
-from bencoder import bencode, bdecode
+from bencode import bencode, bdecode
 
 assert bencode("WWWWWW") == b'6:WWWWWW'
 assert bencode(233) == b'i233e'
