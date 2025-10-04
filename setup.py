@@ -29,7 +29,7 @@ ext_modules = [
 ]
 
 setup(
-    name="bencode",
+    name="bencode.cy",
     packages=["bencode"],
     # ext_modules =cythonize("bencode.py")
     ext_modules=cythonize(ext_modules, annotate=True,language_level="3"),  # annotate生成优化分析报告
