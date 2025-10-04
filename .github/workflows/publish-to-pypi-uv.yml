@@ -26,7 +26,12 @@ jobs:
       - name: "Install uv"
         uses: astral-sh/setup-uv@v6
       - name: "Build wheels"
-        run: uv build
+        run: |
+          uv build --python 3.13 --wheel --sdist
+          uv build --python 3.12 --wheel
+          uv build --python 3.11 --wheel
+          uv build --python 3.10 --wheel
+          uv build --python 3.9 --wheel
       - name: Repair wheels with auditwheel
         run: |
           for wheel in dist/*.whl; do
