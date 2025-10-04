@@ -1,6 +1,6 @@
 [project]
 name = "bencode.cy"
-version = "2025.10.5"
+version = "2025.10.6"
 description = "A fast bencode implementation in Cython that supports Python 3. It uses Cython's pure Python syntax."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -34,6 +34,8 @@ dev = [
     "bcoding>=1.5",
     "bencodepy>=0.9.5",
     "better-bencode>=0.2.1",
+    "bencode-rs>=0.0.5",
+    "bencode2>=0.3.26",
 ]
 
 [tool.ruff]

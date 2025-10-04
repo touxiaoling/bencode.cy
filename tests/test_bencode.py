@@ -115,3 +115,27 @@ def test_bending_benchmark(benchmark, tor):
     from bcoding import bdecode, bencode
 
     benchmark(bdecode, tor)
+
+def test_bencode_rs_benchmark(benchmark, tor):
+    from bencode_rs import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_bdecode_rs_benchmark(benchmark, tor):
+    from bencode_rs import bdecode, bencode
+
+    benchmark(bdecode, tor)
+
+def test_bencode2_benchmark(benchmark, tor):
+    from bencode2 import bdecode, bencode
+
+    e2 = bdecode(tor)
+    benchmark(bencode, e2)
+
+
+def test_bdecode2_benchmark(benchmark, tor):
+    from bencode2 import bdecode, bencode
+
+    benchmark(bdecode, tor)
