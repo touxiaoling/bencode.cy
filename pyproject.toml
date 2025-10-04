@@ -6,11 +6,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license='MIT'
 keywords=['bencoding', 'encode', 'decode', 'bittorrent', 'bencode', 'bencoder', 'cython']
-dependencies = [
-    "bcoding>=1.5",
-    "bencodepy>=0.9.5",
-    "better-bencode>=0.2.1",
-]
+dependencies = []
 
 [build-system]
 requires = ["setuptools", "cython"]
@@ -35,6 +31,9 @@ dev = [
     "bencoder-pyx>=3.0.1;python_version <= '3.11'",
     "cython>=3.1.4",
     "fastbencode>=0.3.6",
+    "bcoding>=1.5",
+    "bencodepy>=0.9.5",
+    "better-bencode>=0.2.1",
 ]
 
 [tool.ruff]

@@ -13,17 +13,15 @@ wheels = [
 
 [[package]]
 name = "bencode-cy"
-version = "1.0.2"
+version = "2025.10.5"
 source = { editable = "." }
-dependencies = [
-    { name = "bcoding" },
-    { name = "bencodepy" },
-    { name = "better-bencode" },
-]
 
 [package.dev-dependencies]
 dev = [
+    { name = "bcoding" },
+    { name = "bencodepy" },
     { name = "bencoder-pyx", marker = "python_full_version < '3.12'" },
+    { name = "better-bencode" },
     { name = "cython" },
     { name = "fastbencode" },
     { name = "pytest" },
@@ -32,15 +30,13 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "bcoding", specifier = ">=1.5" },
-    { name = "bencodepy", specifier = ">=0.9.5" },
-    { name = "better-bencode", specifier = ">=0.2.1" },
-]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "bcoding", specifier = ">=1.5" },
+    { name = "bencodepy", specifier = ">=0.9.5" },
     { name = "bencoder-pyx", marker = "python_full_version < '3.12'", specifier = ">=3.0.1" },
+    { name = "better-bencode", specifier = ">=0.2.1" },
     { name = "cython", specifier = ">=3.1.4" },
     { name = "fastbencode", specifier = ">=0.3.6" },
     { name = "pytest", specifier = ">=8.4.2" },
