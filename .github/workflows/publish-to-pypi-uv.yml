@@ -12,7 +12,9 @@ on:
 jobs:
   pypi-publish:
     name: Upload to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
+    container:
+      image: quay.io/pypa/manylinux_2_38_x86_64
     environment:
       name: release
     permissions:
