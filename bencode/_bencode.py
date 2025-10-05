@@ -76,37 +76,13 @@ def bencode(value: TypeEncodable) -> bytes:
     return b"".join(r)
 
 
+@cython.nogil
 @cython.cfunc
 @cython.inline
 @cython.boundscheck(False)  # 关闭边界检查
 @cython.wraparound(False)  # 关闭负索引检查
 @cython.exceptval(check=False)
-def _compress_stack(stack: "cython.list", stack_pos: cint) -> cint:
-    i: cint
-    j: cint
-    item: list | dict | cython.p_char | cint
-    for i in range(stack_pos):
-        i = stack_pos - i - 1
-        item = stack[i]
-        if item is dict:
-            idict: dict = {}
-            for j in range(i + 1, stack_pos, 2):
-                idict[stack[j]] = stack[j + 1]
-            stack[i] = idict
-            break
-        elif item is list:
-            stack[i] = stack[i + 1 : stack_pos]
-            break
-
-    return i
-
-
-@cython.cfunc
-@cython.inline
-@cython.boundscheck(False)  # 关闭边界检查
-@cython.wraparound(False)  # 关闭负索引检查
-@cython.exceptval(check=False)
-def _parse_forward(till_char: cint, encoded: cython.p_char, pos: cint) -> Tuple[cint, cint]:
+def _parse_forward(till_char: cython.char, encoded: cython.p_char, pos: cint) -> Tuple[cint, cint]:
     idx: cint = pos + 1
     number: cint = 0
     ichar: cython.char = encoded[pos]
@@ -133,12 +109,10 @@ def _parse_forward(till_char: cint, encoded: cython.p_char, pos: cint) -> Tuple[
 @cython.boundscheck(False)  # 关闭边界检查
 @cython.wraparound(False)  # 关闭负索引检查
 @cython.exceptval(check=False)
-def _bdecode_list(encoded: cython.p_char, pos: cint) -> Tuple[list, cint]:
+def _bdecode_list(encoded: cython.p_char, pos: cint, ilist: "cython.list") -> cint:
     ichar: cython.char = encoded[pos]
     number: cint = 0
-    ilist: cython.list = []
-    item: dict | cython.list
-    while ichar != 101:
+    while True:
         if 47 < ichar < 58:  # 0-9 bytes
             # 0:48 1:49 2:50 3:51 4:52 5:53 6:54 7:55 8:56 9:57 ::58
             number, pos = _parse_forward(58, encoded, pos)  #:
@@ -149,38 +123,38 @@ def _bdecode_list(encoded: cython.p_char, pos: cint) -> Tuple[list, cint]:
             number, pos = _parse_forward(101, encoded, pos + 1)  # e
             ilist.append(number)
 
+        elif ichar == 101:
+            return pos + 1
+
         elif ichar == 100:  # d Dictionary
-            item, pos = _bdecode_dict(encoded, pos + 1)
-            ilist.append(item)
+            iidict: dict = {}
+            pos = _bdecode_dict(encoded, pos + 1, iidict)
+            ilist.append(iidict)
 
         elif ichar == 108:  # l List
-            item, pos = _bdecode_list(encoded, pos + 1)
-            ilist.append(item)
+            iilist: cython.list = []
+            pos = _bdecode_list(encoded, pos + 1, iilist)
+            ilist.append(iilist)
 
         else:
             raise ValueError(f"Unable to interpret `{chr(ichar)}`:{ichar} char.")
 
         ichar = encoded[pos]
 
-    return ilist, pos + 1
-
 
 @cython.cfunc
 @cython.boundscheck(False)  # 关闭边界检查
 @cython.wraparound(False)  # 关闭负索引检查
 @cython.exceptval(check=False)
-def _bdecode_dict(encoded: cython.p_char, pos: cint) -> Tuple[list, cint]:
+def _bdecode_dict(encoded: cython.p_char, pos: cint, idict: dict) -> cint:
     ichar: cython.char = encoded[pos]
     number: cint = 0
-    idict: dict = {}
     key: bytes
-    item: cint | bytes | dict | cython.list
-    while ichar != 101:
-        if 47 < ichar < 58:  # 0-9 bytes
-            # 0:48 1:49 2:50 3:51 4:52 5:53 6:54 7:55 8:56 9:57 ::58
-            number, pos = _parse_forward(58, encoded, pos)  #:
-            key = encoded[pos : pos + number]
-            pos += number
+    while True:
+        # 0:48 1:49 2:50 3:51 4:52 5:53 6:54 7:55 8:56 9:57 ::58
+        number, pos = _parse_forward(58, encoded, pos)  #:
+        key = encoded[pos : pos + number]
+        pos += number
 
         ichar = encoded[pos]
 
@@ -194,20 +168,23 @@ def _bdecode_dict(encoded: cython.p_char, pos: cint) -> Tuple[list, cint]:
             number, pos = _parse_forward(101, encoded, pos + 1)  # e
             idict[key] = number
 
-        elif ichar == 100:  # d Dictionary
-            item, pos = _bdecode_dict(encoded, pos + 1)
-            idict[key] = item
-
         elif ichar == 108:  # l List
-            item, pos = _bdecode_list(encoded, pos + 1)
-            idict[key] = item
+            iilist: cython.list = []
+            pos = _bdecode_list(encoded, pos + 1, iilist)
+            idict[key] = iilist
+
+        elif ichar == 100:  # d Dictionary
+            iidict: dict = {}
+            pos = _bdecode_dict(encoded, pos + 1, iidict)
+            idict[key] = iidict
 
         else:
             raise ValueError(f"Unable to interpret `{chr(ichar)}`:{ichar} char.")
 
         ichar = encoded[pos]
 
-    return idict, pos + 1
+        if ichar == 101:
+            return pos + 1
 
 
 @cython.ccall
@@ -219,13 +196,23 @@ def bdecode(encoded: cython.p_char):
     :param encoded:
 
     """
-    pos: cint
+
     number: cint
     ichar: cython.char = encoded[0]
-    item: cython.list | dict
 
-    if 47 < ichar < 58:  # 0-9 bytes
+    if ichar == 100:  # d Dictionary
+        idict: dict = {}
+        _bdecode_dict(encoded, 1, idict)
+        return idict
+
+    elif ichar == 108:  # l List
+        ilist: cython.list = []
+        _bdecode_list(encoded, 1, ilist)
+        return ilist
+
+    elif 47 < ichar < 58:  # 0-9 bytes
         # 0:48 1:49 2:50 3:51 4:52 5:53 6:54 7:55 8:56 9:57 ::58
+        pos: cint
         number, pos = _parse_forward(58, encoded, 0)  #:
         return encoded[pos : pos + number]
 
@@ -233,12 +220,5 @@ def bdecode(encoded: cython.p_char):
         number, _ = _parse_forward(101, encoded, 1)  # e
         return number
 
-    elif ichar == 100:  # d Dictionary
-        item, _ = _bdecode_dict(encoded, 1)
-        return item
-
-    elif ichar == 108:  # l List
-        item, _ = _bdecode_list(encoded, 1)
-        return item
     else:
         raise ValueError(f"Unable to interpret `{chr(ichar)}`:{ichar} char.")
