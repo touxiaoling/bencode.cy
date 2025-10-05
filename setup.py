@@ -12,8 +12,8 @@ if system == "Windows":  # Windows（MSVC）
     extra_compile_args = [
         "/O2",  # 最高优化级别
         "/Ot",  # 优先速度优化
-        "-march=x86-64-v2"
-        # "/arch:AVX2",  # 启用AVX2指令集（根据CPU支持调整）
+        #"-march=x86-64-v2"
+        "/arch:AVX2",  # 启用AVX2指令集（根据CPU支持调整）
         "/GL",
     ]
     extra_link_args = ["/LTCG"]
@@ -31,7 +31,7 @@ else:
         extra_compile_args.append("-march=armv8.4-a")
     else:
         extra_compile_args.append("-march=x86-64-v2")
-        
+
     extra_link_args = ["-flto=thin"]  # 链接器通常无需额外参数，特殊场景可加（如-lm链接数学库）
 
 
