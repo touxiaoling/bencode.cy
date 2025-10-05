@@ -54,13 +54,13 @@ def test_torrent(tor):
 
 @pytest.mark.benchmark()
 def test_bdecode_benchmark(benchmark, tor):
-    benchmark.name = "bencode.decode"
+    benchmark.name = "bencode.cy.decode"
     benchmark(bdecode, tor)
 
 
 @pytest.mark.benchmark
 def test_bencode_benchmark(benchmark, tor):
-    benchmark.name = "bencode.encode"
+    benchmark.name = "bencode.cy.encode"
     e2 = bdecode(tor)
     benchmark(bencode, e2)
 
@@ -69,7 +69,7 @@ def test_bencode_benchmark(benchmark, tor):
 def test_bdecode_py_benchmark(benchmark, tor):
     from bencode._bencode import bdecode
 
-    benchmark.name = "bencode.decodepy"
+    benchmark.name = "bencode.cy.decodepy"
 
     benchmark(bdecode, tor)
 
@@ -78,7 +78,7 @@ def test_bdecode_py_benchmark(benchmark, tor):
 def test_bencode_py_benchmark(benchmark, tor):
     from bencode._bencode import bdecode, bencode
 
-    benchmark.name = "bencode.encodepy"
+    benchmark.name = "bencode.cy.encodepy"
     e2 = bdecode(tor)
     benchmark(bencode, e2)
 
