@@ -79,9 +79,6 @@ def bencode(value: TypeEncodable) -> bytes:
 @cython.nogil
 @cython.cfunc
 @cython.inline
-@cython.boundscheck(False)  # 关闭边界检查
-@cython.wraparound(False)  # 关闭负索引检查
-@cython.exceptval(check=False)
 def _parse_forward(till_char: cython.char, encoded: cython.p_char, pos: cint) -> Tuple[cint, cint]:
     idx: cint = pos + 1
     number: cint = 0
@@ -106,9 +103,7 @@ def _parse_forward(till_char: cython.char, encoded: cython.p_char, pos: cint) ->
 
 
 @cython.cfunc
-@cython.boundscheck(False)  # 关闭边界检查
-@cython.wraparound(False)  # 关闭负索引检查
-@cython.exceptval(check=False)
+@cython.inline
 def _bdecode_list(encoded: cython.p_char, pos: cint, ilist: "cython.list") -> cint:
     ichar: cython.char = encoded[pos]
     number: cint = 0
@@ -143,9 +138,7 @@ def _bdecode_list(encoded: cython.p_char, pos: cint, ilist: "cython.list") -> ci
 
 
 @cython.cfunc
-@cython.boundscheck(False)  # 关闭边界检查
-@cython.wraparound(False)  # 关闭负索引检查
-@cython.exceptval(check=False)
+@cython.inline
 def _bdecode_dict(encoded: cython.p_char, pos: cint, idict: dict) -> cint:
     ichar: cython.char = encoded[pos]
     number: cint = 0
