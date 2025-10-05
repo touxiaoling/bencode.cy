@@ -48,6 +48,7 @@ def _bencode(value: TypeEncodable, r: "cython.list") -> bytes:
     elif isinstance(value, dict):
         r.append(b"d")
         keys: cython.list = sorted(value)
+        i: cython.Py_ssize_t
         for i in range(len(keys)):
             key: str | bytes = keys[i]
             _bencode(key, r)
@@ -56,6 +57,7 @@ def _bencode(value: TypeEncodable, r: "cython.list") -> bytes:
 
     elif isinstance(value, (list, tuple)):
         r.append(b"l")
+        i: cython.Py_ssize_t
         for i in range(len(value)):
             _bencode(value[i], r)
         r.append(b"e")
