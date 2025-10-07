@@ -1,0 +1,5 @@
+- this is a cython project use pure python syntax.
+- build this project using `bash build.sh`.
+- Use uv run for script execution in python projects.
+- Place all test code in the 'tests' folder and implement using pytest library.
+- No unnecessary error handling in the code.

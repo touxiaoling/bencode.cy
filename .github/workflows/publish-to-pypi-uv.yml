@@ -20,6 +20,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: "Build wheels"
         run: |
+          uv build --python 3.14 --wheel
           uv build --python 3.13 --wheel --sdist
           uv build --python 3.12 --wheel
           uv build --python 3.11 --wheel
@@ -53,7 +54,7 @@ jobs:
 
       - name: "Build wheels"
         run: |
-          uv build --python 3.13 --wheel
+          uv build --python 3.14 --wheel
           uv build --python 3.12 --wheel
           uv build --python 3.11 --wheel
           uv build --python 3.10 --wheel
@@ -85,7 +86,7 @@ jobs:
 
       - name: "Build wheels"
         run: |
-          uv build --python 3.13 --wheel
+          uv build --python 3.14 --wheel
           uv build --python 3.12 --wheel
           uv build --python 3.11 --wheel
           uv build --python 3.10 --wheel

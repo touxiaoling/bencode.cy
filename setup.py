@@ -12,7 +12,6 @@ if system == "Windows":  # Windows（MSVC）
     extra_compile_args = [
         "/O2",  # 最高优化级别
         "/Ot",  # 优先速度优化
-        #"-march=x86-64-v2"
         "/arch:AVX2",  # 启用AVX2指令集（根据CPU支持调整）
         "/GL",
     ]
@@ -20,7 +19,7 @@ if system == "Windows":  # Windows（MSVC）
 else:
     extra_compile_args = [
         "-O3",  # 激进优化
-        #"-march=native",  # 针对本地CPU优化
+        # "-march=native",  # 针对本地CPU优化
         "-fvectorize",
         "-fslp-vectorize",
         "-ffast-math",  # 快速数学运算

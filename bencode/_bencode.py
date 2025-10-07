@@ -1,4 +1,4 @@
-# cython: language_level=3str, boundscheck=False, wraparound=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
 # , linetrace=True
 try:
     import cython
@@ -34,39 +34,70 @@ def _bencode_set(value: set, r: "cython.list"):
 
 @cython.cfunc
 @cython.inline
-def _bencode(value: TypeEncodable, r: "cython.list") -> bytes:
+def _bencode_int(value: int, r: "cython.list"):
+    r.append(b"i")
+    r.append(str(value).encode(NUM_ENCODING))
+    r.append(b"e")
+
+
+@cython.cfunc
+@cython.inline
+def _bencode_bytes(value: bytes, r: "cython.list"):
+    r.append(str(len(value)).encode(NUM_ENCODING))
+    r.append(b":")
+    r.append(value)
+
+
+@cython.cfunc
+@cython.inline
+def _bencode_dict(value: dict, r: "cython.list"):
+    i: cython.Py_ssize_t
+    key: str | bytes
+    keys: cython.list = sorted(value)
+    r.append(b"d")
+    for i in range(len(keys)):
+        key = keys[i]
+        if isinstance(key, str):
+            _bencode_bytes(key.encode(VAL_ENCODING), r)
+        else:
+            _bencode_bytes(key, r)
+        _bencode(value[key], r)
+    r.append(b"e")
+
+
+@cython.cfunc
+@cython.inline
+def _bencode_list(value: list | tuple, r: "cython.list"):
+    i: cython.Py_ssize_t
+    r.append(b"l")
+    for i in range(len(value)):
+        _bencode(value[i], r)
+    r.append(b"e")
+
+
+@cython.cfunc
+@cython.inline
+def _bencode(value: TypeEncodable, r: "cython.list"):
     if isinstance(value, (bytes, bytearray)):
-        r.append(str(len(value)).encode(NUM_ENCODING))
-        r.append(b":")
-        r.append(value)
+        _bencode_bytes(value, r)
 
     elif isinstance(value, int):
-        r.append(b"i")
-        r.append(str(value).encode(NUM_ENCODING))
-        r.append(b"e")
+        _bencode_int(value, r)
 
     elif isinstance(value, dict):
-        r.append(b"d")
-        keys: cython.list = sorted(value)
-        i: cython.Py_ssize_t
-        for i in range(len(keys)):
-            key: str | bytes = keys[i]
-            _bencode(key, r)
-            _bencode(value[key], r)
-        r.append(b"e")
+        _bencode_dict(value, r)
 
     elif isinstance(value, (list, tuple)):
-        r.append(b"l")
-        i: cython.Py_ssize_t
-        for i in range(len(value)):
-            _bencode(value[i], r)
-        r.append(b"e")
+        _bencode_list(value, r)
 
     elif isinstance(value, str):
-        _bencode(value.encode(VAL_ENCODING), r)
+        _bencode_bytes(value.encode(VAL_ENCODING), r)
 
     elif isinstance(value, set):
         _bencode_set(value, r)
+
+    elif isinstance(value, bool):
+        _bencode_int(int(value), r)
     else:
         raise ValueError(f"Unable to encode `{type(value)}` {value}")
 
