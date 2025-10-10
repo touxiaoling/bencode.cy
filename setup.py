@@ -17,19 +17,28 @@ if system == "Windows":  # Windows（MSVC）
     ]
     extra_link_args = ["/LTCG"]
 else:
-    extra_compile_args = [
-        "-O3",  # 激进优化
-        # "-march=native",  # 针对本地CPU优化
-        "-fvectorize",
-        "-fslp-vectorize",
-        "-ffast-math",  # 快速数学运算
-        "-funroll-loops",  # 循环展开
-        "-flto=thin",
-    ]
     if is_arm64:
-        extra_compile_args.append("-march=armv8.4-a")
+        extra_compile_args = [
+            "-O3",  # 激进优化
+            # "-march=native",  # 针对本地CPU优化
+            "-fvectorize",
+            "-fslp-vectorize",
+            "-ffast-math",  # 快速数学运算
+            "-funroll-loops",  # 循环展开
+            "-flto=thin",
+            "-march=armv8-a",
+        ]
     else:
-        extra_compile_args.append("-march=x86-64-v2")
+        extra_compile_args = [
+            "-O3",  # 激进优化
+            # "-march=native",  # 针对本地CPU优化
+            "-ftree-vectorize",
+            "-ftree-slp-vectorize",
+            "-ffast-math",  # 快速数学运算
+            "-funroll-loops",  # 循环展开
+            "-flto=thin",
+            "-march=x86-64-v2",
+        ]
 
     extra_link_args = ["-flto=thin"]  # 链接器通常无需额外参数，特殊场景可加（如-lm链接数学库）
 
