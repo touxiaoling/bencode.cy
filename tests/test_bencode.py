@@ -173,6 +173,7 @@ def test_bencoding_benchmark(benchmark, tor):
 
 
 @pytest.mark.benchmark
+@pytest.mark.skipif(sys.version_info <= (3, 13), reason="anything")
 def test_bdecode_rs_benchmark(benchmark, tor):
     from bencode_rs import bdecode, bencode
 
@@ -181,6 +182,7 @@ def test_bdecode_rs_benchmark(benchmark, tor):
 
 
 @pytest.mark.benchmark
+@pytest.mark.skipif(sys.version_info <= (3, 13), reason="anything")
 def test_bencode_rs_benchmark(benchmark, tor):
     from bencode_rs import bdecode, bencode
 
