@@ -26,8 +26,8 @@ else:
             "-ffast-math",  # 快速数学运算
             "-funroll-loops",  # 循环展开
             "-flto=thin",
-            "-march=armv8-a",
         ]
+        extra_link_args = ["-flto=thin"]  # 链接器通常无需额外参数，特殊场景可加（如-lm链接数学库）
     else:
         extra_compile_args = [
             "-O3",  # 激进优化
@@ -36,11 +36,11 @@ else:
             "-ftree-slp-vectorize",
             "-ffast-math",  # 快速数学运算
             "-funroll-loops",  # 循环展开
-            "-flto=thin",
+            "-flto",
             "-march=x86-64-v2",
         ]
 
-    extra_link_args = ["-flto=thin"]  # 链接器通常无需额外参数，特殊场景可加（如-lm链接数学库）
+        extra_link_args = ["-flto"]  # 链接器通常无需额外参数，特殊场景可加（如-lm链接数学库）
 
 
 ext_modules = [
